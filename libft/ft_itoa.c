@@ -3,54 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 15:08:49 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 15:35:47 by chunpark         ###   ########.fr       */
+/*   Created: 2024/03/04 20:24:49 by dukim             #+#    #+#             */
+/*   Updated: 2024/03/06 17:55:51 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_count_len(int n)
+static int	pow_ten(unsigned int un)
 {
-	int	temp;
-	int	len;
+	unsigned int	pow;
 
-	if (n == 0)
-		return (1);
-	temp = n;
-	len = 0;
-	while (temp)
-	{
-		len++;
-		temp /= 10;
-	}
-	return (len);
+	if (un >= 1000000000)
+		return (1000000000);
+	pow = 1;
+	while (pow <= un)
+		pow *= 10;
+	return (pow / 10);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*str;
-	int		len;
-	int		sign;
+	char				itoa[12];
+	unsigned int		pow;
+	unsigned int		un;
+	int					i;
 
-	sign = 1;
-	len = ft_count_len(n);
+	i = 0;
 	if (n < 0)
 	{
-		sign = -1;
-		len++;
+		un = -n;
+		itoa[i++] = '-';
 	}
-	str = (char *) malloc (sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	str[len] = '\0';
-	while (len--)
+	else
+		un = n;
+	pow = pow_ten(un);
+	while (pow)
 	{
-		str[len] = n % 10 * sign + '0';
-		n /= 10;
+		itoa[i++] = (un / pow) + '0';
+		un = un % pow;
+		pow /= 10;
 	}
-	if (sign == -1)
-		str[0] = '-';
-	return (str);
+	itoa[i] = '\0';
+	if (i == 0)
+		return (ft_strdup("0"));
+	return (ft_strdup(itoa));
 }

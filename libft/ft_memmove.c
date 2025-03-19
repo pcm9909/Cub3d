@@ -3,32 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:09:11 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 11:10:04 by chunpark         ###   ########.fr       */
+/*   Created: 2024/02/28 18:56:16 by dukim             #+#    #+#             */
+/*   Updated: 2024/03/04 13:55:32 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
+	unsigned char	*convert_dest;
+	unsigned char	*convert_src;
+	size_t			size;
 
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	d = (unsigned char *)dst;
-	s = (const unsigned char *)src;
-	if (s < d)
-	{
-		s += len;
-		d += len;
-		while (len--)
-			*(--d) = *(--s);
-	}
-	else
-		while (len--)
-			*(d++) = *(s++);
-	return (dst);
+	if (dest == src)
+		return (dest);
+	if ((size_t)(dest - src) >= n)
+		return (ft_memcpy(dest, src, n));
+	convert_dest = (unsigned char *)dest;
+	convert_src = (unsigned char *)src;
+	size = n;
+	while (--size > 0)
+		convert_dest[size] = convert_src[size];
+	*convert_dest = *convert_src;
+	return ((void *)convert_dest);
 }

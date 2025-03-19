@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:24:25 by chunpark          #+#    #+#             */
-/*   Updated: 2024/09/10 17:41:33 by chunpark         ###   ########.fr       */
+/*   Created: 2024/03/04 16:21:08 by dukim             #+#    #+#             */
+/*   Updated: 2024/03/04 16:38:03 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*str;
-	size_t	len;
+	char	*join_str;
+	size_t	s1_len;
+	size_t	s2_len;
 
 	if (!s1 || !s2)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	ft_strlcpy (str, s1, ft_strlen(s1) + 1);
-	ft_strlcat (str, s2, len + 1);
-	return (str);
+		return (0);
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	join_str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!join_str)
+		return (0);
+	ft_strlcpy(join_str, s1, s1_len + 1);
+	ft_strlcpy(join_str + s1_len, s2, s2_len + 1);
+	return (join_str);
 }

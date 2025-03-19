@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_freesplit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:21:29 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 11:21:56 by chunpark         ###   ########.fr       */
+/*   Created: 2024/11/22 20:40:46 by dukim             #+#    #+#             */
+/*   Updated: 2024/11/30 01:27:16 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-char	*ft_strcat(char *s1, const char *s2)
+#include <stdlib.h>
+
+void	ft_freesplit(char **split)
 {
-	int	i;
-	int	j;
+	char	**temp;
 
-	i = 0;
-	j = 0;
-	while (s1[i])
-		i++;
-	while (s2[j])
+	temp = split;
+	while (*split)
 	{
-		s1[i] = s2[j];
-		i++;
-		j++;
+		free(*split);
+		split++;
 	}
-	s1[i] = '\0';
-	return (s1);
+	free(temp);
 }

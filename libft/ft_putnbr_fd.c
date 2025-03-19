@@ -3,29 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:11:36 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 14:47:13 by chunpark         ###   ########.fr       */
+/*   Created: 2024/03/06 19:59:04 by dukim             #+#    #+#             */
+/*   Updated: 2024/03/06 20:05:02 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
+
+static int	pow_ten(unsigned int un)
+{
+	unsigned int	pow;
+
+	if (un >= 1000000000)
+		return (1000000000);
+	pow = 1;
+	while (pow <= un)
+		pow *= 10;
+	return (pow / 10);
+}
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483648)
-	{
-		ft_putstr_fd ("-2147483648", fd);
-		return ;
-	}
+	char				nbr[12];
+	unsigned int		pow;
+	unsigned int		un;
+	int					i;
+
+	i = 0;
 	if (n < 0)
 	{
-		ft_putchar_fd ('-', fd);
-		n = -n;
+		un = -n;
+		nbr[i++] = '-';
 	}
-	if (n > 9)
+	else
+		un = n;
+	pow = pow_ten(un);
+	while (pow)
 	{
-		ft_putnbr_fd (n / 10, fd);
+		nbr[i++] = (un / pow) + '0';
+		un = un % pow;
+		pow /= 10;
 	}
-	ft_putchar_fd (n % 10 + '0', fd);
+	nbr[i] = '\0';
+	if (i == 0)
+		ft_putstr_fd("0", fd);
+	else
+		ft_putstr_fd(nbr, fd);
 }

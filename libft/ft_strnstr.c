@@ -3,35 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:29:40 by chunpark          #+#    #+#             */
-/*   Updated: 2024/10/02 16:15:12 by chunpark         ###   ########.fr       */
+/*   Created: 2024/02/29 10:29:25 by dukim             #+#    #+#             */
+/*   Updated: 2024/02/29 11:12:31 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+static	size_t	is_in_str(const char *slice, const char *to_find, size_t len)
 {
 	size_t	i;
-	size_t	j;
 
-	if (!haystack || !needle)
-		return (NULL);
 	i = 0;
-	if (needle[0] == '\0')
-		return ((char *)haystack);
-	while (haystack[i] && i < len)
+	while (to_find[i] != '\0' && i < len)
 	{
-		j = 0;
-		while (haystack[i + j] == needle[j] && i + j < len)
-		{
-			j++;
-			if (needle[j] == '\0')
-				return ((char *)&haystack[i]);
-		}
+		if (slice[i] != to_find[i])
+			return (0);
 		i++;
 	}
-	return (NULL);
+	if (i == len)
+		return (0);
+	return (1);
+}
+
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	big_len;
+
+	if (!big && len == 0)
+		return (0);
+	if (little[0] == '\0')
+		return ((char *)big);
+	big_len = ft_strlen(big);
+	if (len > big_len)
+		len = big_len;
+	i = 0;
+	while (big[i] != '\0' && i < len)
+	{
+		if (is_in_str(&big[i], little, len - i + 1))
+			return ((char *)(big + i));
+		i++;
+	}
+	return (0);
 }

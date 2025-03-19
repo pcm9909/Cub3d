@@ -3,41 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 10:22:45 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 10:25:35 by chunpark         ###   ########.fr       */
+/*   Created: 2024/02/29 11:13:00 by dukim             #+#    #+#             */
+/*   Updated: 2024/02/29 11:26:51 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isspace(int c)
+static int	is_space_ch(char ch)
 {
-	return (c == ' ' || (c >= '\t' && c <= '\r'));
+	if ((9 <= ch && ch <= 13) || ch == ' ')
+		return (1);
+	return (0);
 }
 
-int	ft_atoi(const char *str)
+static int	is_sign_ch(char ch)
 {
-	int	i;
-	int	sign;
-	int	result;
+	if (ch == '+' || ch == '-')
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	sign = 1;
-	result = 0;
-	while (ft_isspace ((unsigned char)str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+int	ft_atoi(const char *nptr)
+{
+	int	sum;
+	int	minus_cnt;
+
+	sum = 0;
+	minus_cnt = 0;
+	while (is_space_ch(*nptr))
+		nptr++;
+	if (is_sign_ch(*nptr))
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		if (*nptr == '-')
+			minus_cnt++;
+		nptr++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (*nptr != '\0' && ft_isdigit(*nptr))
 	{
-		result = result * 10 + (str[i] - '0');
-		i++;
+		sum = sum * 10 + (*nptr - '0');
+		nptr++;
 	}
-	return (result * sign);
+	if (minus_cnt)
+		sum = -sum;
+	return (sum);
 }

@@ -3,31 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:32:20 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 16:51:23 by chunpark         ###   ########.fr       */
+/*   Created: 2024/03/04 16:56:10 by dukim             #+#    #+#             */
+/*   Updated: 2024/03/15 14:51:28 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	start;
-	size_t	end;
-	char	*str;
+	size_t	left_trim;
+	size_t	right_trim;
 
-	if (!s1)
-		return (NULL);
-	start = 0;
-	while (s1[start] && ft_strchr (set, s1[start]))
-		start++;
-	end = ft_strlen (s1);
-	while (end > start && ft_strchr(set, s1[end - 1]))
-		end--;
-	str = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, s1 + start, end - start + 1);
-	return (str);
+	if (!s1 || !set)
+		return (0);
+	if (*s1 == '\0' || *set == '\0')
+		return (ft_strdup(s1));
+	left_trim = 0;
+	while (s1[left_trim] != '\0')
+	{
+		if (!ft_strchr(set, s1[left_trim]))
+			break ;
+		left_trim++;
+	}
+	right_trim = ft_strlen(s1) - 1;
+	while (right_trim > left_trim)
+	{
+		if (!ft_strchr(set, s1[right_trim]))
+			break ;
+		right_trim--;
+	}
+	return (ft_substr(s1, left_trim, right_trim - left_trim + 1));
 }

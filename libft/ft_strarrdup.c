@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strarrdup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:22:32 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 11:22:44 by chunpark         ###   ########.fr       */
+/*   Created: 2024/11/30 00:59:19 by dukim             #+#    #+#             */
+/*   Updated: 2024/11/30 00:59:20 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+char	**ft_strarrdup(char **strarr)
 {
-	while (*s1 && *s2 && *s1 == *s2)
+	char	**dup;
+	size_t	len;
+	size_t	i;
+
+	len = ft_splitlen((const char **)strarr);
+	dup = malloc(sizeof(char *) * (len + 1));
+	i = 0;
+	while (i < len)
 	{
-		s1++;
-		s2++;
+		dup[i] = ft_strdup(strarr[i]);
+		i++;
 	}
-	return (*s1 - *s2);
+	dup[i] = NULL;
+	return (dup);
 }

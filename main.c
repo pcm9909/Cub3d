@@ -1,6 +1,9 @@
 #include "mlx/mlx.h"
 #include "stdio.h"
 #include "stdlib.h"
+
+#include "map/map.h"
+
 #define W 119
 #define D 100
 #define S 115
@@ -58,8 +61,18 @@ int keypress(int key, void *param)
 	}
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
+	t_config	config;
+
+	if (argc != 2) {
+		write(2, "Usage: ./cub3D <scene_file.cub>\n", 32);
+		return 1;
+	}
+	if (!parse_file(argv[1], &config)) {
+		write(2, "Failed to parse the .cub file\n", 31);
+		return 1;
+	}
 	void	*img;
 
 	mlx = mlx_init();

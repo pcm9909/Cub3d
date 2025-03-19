@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chunpark <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 11:22:55 by chunpark          #+#    #+#             */
-/*   Updated: 2024/02/29 11:23:15 by chunpark         ###   ########.fr       */
+/*   Created: 2024/08/13 20:17:33 by dukim             #+#    #+#             */
+/*   Updated: 2024/09/24 22:11:36 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-char	*ft_strcpy(char *dst, const char *src)
+size_t	ft_splitlen(const char **split)
 {
-	int	i;
+	const char	**ori_s;
 
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
+	ori_s = split;
+	while (*split != 0)
+		split++;
+	return (split - ori_s);
 }
