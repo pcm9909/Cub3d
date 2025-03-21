@@ -22,7 +22,7 @@ typedef struct s_config {
 	char	*texture_ea;
 	int		floor_color[3];
 	int		ceiling_color[3];
-	char	**map;
+	char	**map;// 변환된 int 맵
 	int		map_lines;
 } t_config;
 
