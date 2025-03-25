@@ -5,7 +5,7 @@
 #include <math.h>
 #include <string.h>
 
-// linux
+// linux keycode
 #define W 119
 #define D 100
 #define S 115
@@ -15,7 +15,7 @@
 #define RIGHT 65363
 #define LEFT 65361
 
-// Mac
+// Mac keycode
 // #define W 13
 // #define D 2
 // #define S 1
@@ -27,15 +27,12 @@
 #define HEIGHT 1080
 #define WIDTH  1920
 
-int map_height;
-int map_width;
-
-void *mlx;
-void *mlx_win;
+int map_height; // map 구조체 추가시 삭제
+int map_width; // map 구조체 추가시 삭제
 
 double posX = 10, posY = 10;      // 플레이어 좌표
 double dirX = -1, dirY = 0;       // 플레이어의 시선 방향
-double planeX = 0, planeY = 0.66; // 카메라 평면
+double planeX, planeY; // 카메라 평면
 double moveSpeed = 0.3;           // 이동 속도
 double rotSpeed = 0.1;            // 회전 속도
 
@@ -45,6 +42,42 @@ int bpp, size_line, endian;
 
 t_config config;
 
+typedef struct	s_player
+{
+	double poxX;
+	double posY;
+	double dirX;
+	double dirY;
+	double sight_dir;
+}				t_player;
+
+typedef struct	s_camera
+{
+	double planeX;
+	double planeY;
+	double moveSpeed;
+	double rotSpeed;
+}				t_camera;
+
+typedef struct	s_mlx
+{
+	void	*mlx;
+	void	*mlx_win;
+}				t_mlx;
+
+typedef struct	s_img
+{
+	void	*img;
+	char	*img_data;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}				t_img;
+
+
+t_mlx mlx;
+t_player player;
+
 // 텍스처
 void *texture[4];      // 텍스처 배열
 char *texture_data[4];
@@ -52,9 +85,11 @@ int tex_bpp[4], tex_size_line[4], tex_endian[4];
 int texWidth = 64, texHeight = 64;
 int render_frame();
 
+
 void set_player_direction(char direction)
 {
-	double directions[4][4] =
+	int index;
+	double directions[4][4] = // 할당 함수로 빼기
 	{
 		{0, -1, 0.66, 0},
 		{0, 1, -0.66, 0},
@@ -62,7 +97,7 @@ void set_player_direction(char direction)
 		{-1, 0, 0, -0.66}
 	};
 
-	int index = 0;
+	index = 0;
 	if (direction == 'N')
 		index = 0;
 	else if (direction == 'S')
@@ -79,16 +114,16 @@ void set_player_direction(char direction)
 
 void init_image()
 {
-    img = mlx_new_image(mlx, WIDTH, HEIGHT);
+    img = mlx_new_image(mlx.mlx, WIDTH, HEIGHT);
     img_data = mlx_get_data_addr(img, &bpp, &size_line, &endian);
 }
 
 void load_textures()
 {
-	char *texture_files[4] = {config.texture_ea, config.texture_no, config.texture_so, config.texture_we}; //파싱단에서 배열로 받기
+	char *texture_files[4] = {config.texture_ea, config.texture_no, config.texture_so, config.texture_we}; //map 배열로 변경
 	for (int i = 0; i < 4; i++)
 	{
-		texture[i] = mlx_xpm_file_to_image(mlx, texture_files[i], &texWidth, &texHeight);
+		texture[i] = mlx_xpm_file_to_image(mlx.mlx, texture_files[i], &texWidth, &texHeight);
 		if (!texture[i])
 		{
 			printf("Failed to load texture %s\n", texture_files[i]);
@@ -104,19 +139,21 @@ void load_textures()
 void move_player(double moveX, double moveY)
 {
     // X 이동 검사
-    int newX = (int)(posX + moveX);
-    int currentY = (int)posY;
+    int	newX;
+    int	currentY;
+	int	newY;
+    int	currentX;
 
+	newX = (int)(posX + moveX);
+	currentY = (int)posY;
     if (newX >= 0 && newX < map_width && currentY >= 0 && currentY < map_height &&
         config.map[currentY][newX] == '0')
     {
         posX += moveX;
     }
-
     // Y 이동 검사
-    int newY = (int)(posY + moveY);
-    int currentX = (int)posX;
-
+	newY = (int)(posY + moveY);
+	currentX = (int)posX;
     if (newY >= 0 && newY < map_height && currentX >= 0 && currentX < map_width &&
         config.map[newY][currentX] == '0')
     {
@@ -127,11 +164,12 @@ void move_player(double moveX, double moveY)
 void rotate_player(double angle)
 {
 	double	oldDirX;
+	double	oldPlaneX;
+
 	oldDirX = dirX;
 	dirX = dirX * cos(angle) - dirY * sin(angle);
 	dirY = oldDirX * sin(angle) + dirY * cos(angle);
 
-	double	oldPlaneX;
 	oldPlaneX = planeX;
 	planeX = planeX * cos(angle) - planeY * sin(angle);
 	planeY = oldPlaneX * sin(angle) + planeY * cos(angle);
@@ -319,7 +357,7 @@ int render_frame()
 			*(int *)(img_data + pixel) = color;
 		}
 	}
-	mlx_put_image_to_window(mlx, mlx_win, img, 0, 0);
+	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img, 0, 0);
 	return 0;
 }
 
@@ -327,24 +365,24 @@ int main(int argc, char **argv)
 {
 	if (argc != 2) {
 		write(2, "Usage: ./cub3D <scene_file.cub>\n", 32);
-		return 1;
+		exit(1);
 	}
 	if (!parse_file(argv[1], &config)) {
 		write(2, "Failed to parse the .cub file\n", 31);
-		return 1;
+		exit(1);
 	}
-	map_height = config.map_lines;
-	map_width = 19;
-    mlx = mlx_init();
-    mlx_win = mlx_new_window(mlx, WIDTH, HEIGHT, "Cub3D");
+	map_height = config.map_lines; // 추가 되면 삭제
+	map_width = 19; // 추가 되면 삭제
+    mlx.mlx = mlx_init();
+    mlx.mlx_win = mlx_new_window(mlx.mlx, WIDTH, HEIGHT, "Cub3D");
     init_image();
     load_textures();
-	mlx_string_put(mlx, mlx_win, WIDTH / 2 - 20, HEIGHT / 2, 0xFFFFFF, "Press any Key");
-    set_player_direction('W');
-    posX = 10.5;
-    posY = 10.5;
-    mlx_hook(mlx_win, 2, 1L << 0, keypress, NULL);
-	mlx_hook(mlx_win, 17,  0 , keypress, NULL);
-    mlx_loop(mlx);
+	mlx_string_put(mlx.mlx, mlx.mlx_win, WIDTH / 2 - 20, HEIGHT / 2, 0xFFFFFF, "Press any Key");
+    set_player_direction('W'); //파싱부 sight dir 추가되면 수정 필요함
+    posX = 5.5; // pos추가되면 삭제
+    posY = 5.5; // pos추가되면 삭제
+    mlx_hook(mlx.mlx_win, 2, 1L << 0, keypress, NULL);
+	mlx_hook(mlx.mlx_win, 17,  0 , keypress, NULL);
+    mlx_loop(mlx.mlx);
     return 0;
 }
