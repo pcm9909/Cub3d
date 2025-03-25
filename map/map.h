@@ -15,6 +15,32 @@
  * - map: 파일의 마지막 부분에 등장하는 맵 문자열 배열
  * - map_lines: 맵이 몇 줄인지 저장
  */
+
+
+//map_lines -> map_height 변경 어떰?
+//map_width 추가 부탁
+
+//texture 배열로 -> config->texture[4]
+// 맵에 들어오는 NEWS랑 좌표 구하기
+/*
+111111
+100E01
+100001
+111111
+
+playerX = 3
+playerY = 1
+player_sightpos = E
+*/
+
+/*
+    1111111111
+11111000000001
+10000000000001
+11111111111111
+이런 맵 처리
+*/
+
 typedef struct s_config {
 	char	*texture_no;
 	char	*texture_so;
@@ -22,7 +48,7 @@ typedef struct s_config {
 	char	*texture_ea;
 	int		floor_color[3];
 	int		ceiling_color[3];
-	char	**map;// 변환된 int 맵
+	char	**map;
 	int		map_lines;
 } t_config;
 
