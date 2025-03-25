@@ -39,6 +39,7 @@ double rotSpeed = 0.1;            // 회전 속도
 void *img;
 char *img_data;
 int bpp, size_line, endian;
+void *texture[4];
 
 t_config config;
 
@@ -74,12 +75,10 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
-
 t_mlx mlx;
 t_player player;
 
-// 텍스처
-void *texture[4];      // 텍스처 배열
+// 텍스처     // 텍스처 배열
 char *texture_data[4];
 int tex_bpp[4], tex_size_line[4], tex_endian[4];
 int texWidth = 64, texHeight = 64;
@@ -136,6 +135,8 @@ void load_textures()
 	}
 }
 
+
+
 void move_player(double moveX, double moveY)
 {
     // X 이동 검사
@@ -143,6 +144,7 @@ void move_player(double moveX, double moveY)
     int	currentY;
 	int	newY;
     int	currentX;
+
 
 	newX = (int)(posX + moveX);
 	currentY = (int)posY;
@@ -322,6 +324,7 @@ int render_frame()
 			else
 				texNum = 0; // 남/북
 		}
+		//
 		double wallX;
 		if (side == 0)
 			wallX = posY + perpWallDist * rayDirY;
@@ -336,6 +339,7 @@ int render_frame()
 		if (side == 1 && rayDirY < 0)
 			texX = texWidth - texX - 1;
 
+		//
 		double step;
 		step = 1.0 * texHeight / lineHeight;
 		double texPos;
