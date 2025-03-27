@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 19:41:12 by dukim             #+#    #+#             */
-/*   Updated: 2025/03/26 19:41:14 by dukim            ###   ########.fr       */
+/*   Updated: 2025/03/27 15:28:01 by chunpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	parse_file(const char *filename, t_config *config)
 	if (fd < 0)
 		return (0);
 	init_config(config);
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line)
 	{
 		remove_trailing_newline(line);
 		if (!process_line(config, line))
@@ -35,6 +36,7 @@ int	parse_file(const char *filename, t_config *config)
 			return (0);
 		}
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (1);

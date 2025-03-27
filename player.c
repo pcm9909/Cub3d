@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 19:40:08 by dukim             #+#    #+#             */
-/*   Updated: 2025/03/26 19:40:09 by dukim            ###   ########.fr       */
+/*   Updated: 2025/03/27 21:11:44 by chunpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,45 @@ void	rotate_player(t_game *game, double angle)
 		game->player.plane_y * cos(angle);
 }
 
+void	set_directions(int index, t_player *player)
+{
+	if (index == 1 || index == 2)
+	{
+		player->dir_x = 0;
+		player->dir_y = -1;
+		player->plane_x = 0.66;
+		player->plane_y = 0;
+		if (index == 2)
+		{
+			player->dir_y = 1;
+			player->plane_x = -0.66;
+		}
+	}
+	if (index == 3 || index == 4)
+	{
+		player->dir_x = 1;
+		player->dir_y = 0;
+		player->plane_x = 0;
+		player->plane_y = 0.66;
+		if (index == 4)
+		{
+			player->dir_x = -1;
+			player->plane_y = -0.66;
+		}
+	}
+}
+
 void	set_player_direction(char dir, t_player *player)
 {
 	int		index;
-	double	directions[4][4] = {
-		{0, -1, 0.66, 0},
-		{0, 1, -0.66, 0},
-		{1, 0, 0, 0.66},
-		{-1, 0, 0, -0.66}
-	};
 
 	if (dir == 'N')
-		index = 0;
-	else if (dir == 'S')
 		index = 1;
-	else if (dir == 'E')
+	else if (dir == 'S')
 		index = 2;
-	else if (dir == 'W')
+	else if (dir == 'E')
 		index = 3;
-	else
-		index = 0;
-	player->dir_x = directions[index][0];
-	player->dir_y = directions[index][1];
-	player->plane_x = directions[index][2];
-	player->plane_y = directions[index][3];
+	else if (dir == 'W')
+		index = 4;
+	set_directions(index, player);
 }
