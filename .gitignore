@@ -2,3 +2,4 @@
 *.a
 a.out
 .DS_Store
+cub3d
