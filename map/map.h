@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/26 19:41:08 by dukim             #+#    #+#             */
+/*   Updated: 2025/03/26 19:41:09 by dukim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAP_H
 # define MAP_H
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <string.h>
 
-#include "../libft/libft.h"
+# include "../libft/libft.h"
 
 /*
  * 예제 구조체 t_config는 .cub 파일에 포함될 주요 요소를 저장합니다.
@@ -34,7 +46,7 @@ player_sightpos = E
 */
 
 /*
-    1111111111
+	1111111111
 11111000000001
 10000000000001
 11111111111111
@@ -50,15 +62,15 @@ typedef struct s_config {
 	int		ceiling_color[3];
 	char	**map;
 	int		map_lines;
-} t_config;
+}	t_config;
 
-void    init_config(t_config *config);
-void    free_config(t_config *config);
+void	init_config(t_config *config);
+void	free_config(t_config *config);
 
-char    *ltrim(char *s);
-void    remove_trailing_newline(char *s);
+char	*ltrim(char *s);
+void	remove_trailing_newline(char *s);
 
-int     process_line(t_config *config, char *line);
-int     parse_file(const char *filename, t_config *config);
+int		process_line(t_config *config, char *line);
+int		parse_file(const char *filename, t_config *config);
 
 #endif
