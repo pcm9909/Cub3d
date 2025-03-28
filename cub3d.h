@@ -13,11 +13,12 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "mlx/mlx.h"
-# include "map/map.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
+
+# include "mlx/mlx.h"
+# include "libft/libft.h"
 
 # define WIDTH 1920
 # define HEIGHT 1080
@@ -30,6 +31,26 @@
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+
+typedef struct s_player_spawn
+{
+	int		x;
+	int		y;
+	char	sight;
+}	t_player_spawn;
+
+typedef struct s_config {
+	char			*texture_no;
+	char			*texture_so;
+	char			*texture_we;
+	char			*texture_ea;
+	int				floor_color[3];
+	int				ceiling_color[3];
+	char			**map;
+	int				map_height;
+	int				map_width;
+	t_player_spawn	player;
+}	t_config;
 
 typedef struct s_player
 {

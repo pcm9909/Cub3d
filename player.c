@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <math.h>
 
 void	move_player(t_game *game, double move_x, double move_y)
 {

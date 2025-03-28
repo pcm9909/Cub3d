@@ -25,7 +25,11 @@ void	init_config(t_config *config)
 	config->ceiling_color[1] = -1;
 	config->ceiling_color[2] = -1;
 	config->map = NULL;
-	config->map_lines = 0;
+	config->map_height = 0;
+	config->map_width = 0;
+	config->player.x = -1;
+	config->player.y = -1;
+	config->player.sight = '\0';
 }
 
 void	free_config(t_config *config)
@@ -43,7 +47,7 @@ void	free_config(t_config *config)
 	if (config->map)
 	{
 		i = 0;
-		while (i < config->map_lines)
+		while (i < config->map_height)
 		{
 			free(config->map[i]);
 			i++;

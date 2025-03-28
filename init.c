@@ -26,14 +26,14 @@ void	load_textures(t_tex *tex, t_config *config, void *mlx)
 
 	texture_files[0] = config->texture_ea;
 	texture_files[1] = config->texture_no;
-	texture_files[2] = config->texture_so;
-	texture_files[3] = config->texture_we;
+	texture_files[2] = config->texture_we;
+	texture_files[3] = config->texture_so;
 	tex->width = 64;
 	tex->height = 64;
 	i = 0;
 	while (i < 4)
 	{
-		tex->tex_img[i] = mlx_xpm_file_to_image(mlx, texture_files[i],
+		tex->tex_img[i] = mlx_xpm_file_to_image(mlx, texture_files[i], \
 				&tex->width, &tex->height);
 		if (!tex->tex_img[i])
 		{
@@ -41,7 +41,7 @@ void	load_textures(t_tex *tex, t_config *config, void *mlx)
 			exit(1);
 		}
 		else
-			tex->tex_data[i] = mlx_get_data_addr(tex->tex_img[i],
+			tex->tex_data[i] = mlx_get_data_addr(tex->tex_img[i], \
 					&tex->bpp[i], &tex->size_line[i], &tex->endian[i]);
 		i++;
 	}
