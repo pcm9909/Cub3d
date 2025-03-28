@@ -13,20 +13,23 @@
 #include "map.h"
 
 /*
- * check_player_spawn: 한 줄에서 'N', 'S', 'E', 'W' 문자가 있다면
- * 해당 좌표와 시선 정보를 config->player에 저장하고 해당 위치를 '0'으로 변경.
- */
-static void	check_player_spawn(t_config *config, char *line, int row)
+** check_player_spawn: 한 줄에서 'N', 'S', 'E', 'W' 문자가 있다면,
+** 플레이어 스폰이 아직 기록되지 않은 경우에만 해당 좌표와 시선을
+** config->player에 저장하고 해당 위치를 '0'으로 변경합니다.
+** 만약 이미 플레이어 스폰이 기록되어 있다면 에러(0)를 반환합니다.
+*/
+int	check_player_spawn(t_config *config, char *line, int row)
 {
 	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if ((line[i] == 'N' || line[i] == 'S' || \
-			line[i] == 'E' || line[i] == 'W') && \
-			config->player.sight == '\0')
+		if (line[i] == 'N' || line[i] == 'S' || \
+			line[i] == 'E' || line[i] == 'W')
 		{
+			if (config->player.sight != '\0')
+				return (0);
 			config->player.x = i;
 			config->player.y = row;
 			config->player.sight = line[i];
@@ -34,6 +37,7 @@ static void	check_player_spawn(t_config *config, char *line, int row)
 		}
 		i++;
 	}
+	return (1);
 }
 
 /*
@@ -91,10 +95,13 @@ static int	add_map_line(t_config *config, char *line)
 	char	**new_map;
 	int		len;
 
+	if (!validate_map_line(line))
+		return (0);
 	len = ft_strlen(line);
 	if (len > config->map_width)
 		config->map_width = len;
-	check_player_spawn(config, line, config->map_height);
+	if (!check_player_spawn(config, line, config->map_height))
+		return (0);
 	new_map = ft_realloc(config->map, \
 			(sizeof(char *) * config->map_height), \
 			(sizeof(char *) * (config->map_height + 1)));

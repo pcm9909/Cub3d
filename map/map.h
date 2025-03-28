@@ -26,4 +26,7 @@ void	remove_trailing_newline(char *s);
 int		process_line(t_config *config, char *line);
 int		parse_file(const char *filename, t_config *config);
 
+int	    validate_extension(const char *filename);
+int     validate_map_line(char *line);
+
 #endif
