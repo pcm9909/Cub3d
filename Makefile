@@ -29,7 +29,7 @@ OBJS 		:=	$(SRCS:%.c=%.o)
 all			:	$(LIBFT_LIB) $(MLX_LIB) $(NAME)
 
 $(NAME)		:	$(OBJS)
-				$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) 	
+				$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -L$(MLX) -lmlx -lXext -lX11 -lm -o $(NAME) 	
 
 $(LIBFT_LIB):
 				@make bonus -C $(LIBFT)
