@@ -6,7 +6,7 @@
 /*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 18:36:13 by dukim             #+#    #+#             */
-/*   Updated: 2025/03/28 18:36:15 by dukim            ###   ########.fr       */
+/*   Updated: 2025/03/28 22:02:57 by dukim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,38 @@ int	validate_map_line(char *line)
 			return (0);
 		i++;
 	}
+	return (1);
+}
+
+/*
+** validate_map_closed: 맵 전체의 모든 '0' 영역이 완전히 닫혀 있는지 검사.
+** 만약 하나라도 열린 영역이 있으면 0, 모두 닫혀 있으면 1 반환.
+*/
+int	validate_map_closed(t_config *config)
+{
+	int		i;
+	int		j;
+	int		row_len;
+	int		**visited;
+
+	visited = allocate_visited(config);
+	if (!visited)
+		return (0);
+	i = -1;
+	while (++i < config->map_height)
+	{
+		row_len = ft_strlen(config->map[i]);
+		j = -1;
+		while (++j < row_len)
+		{
+			if (config->map[i][j] == '0' && !visited[i][j] && \
+				!dfs(i, j, config, visited))
+			{
+				free_visited(config, visited);
+				return (0);
+			}
+		}
+	}
+	free_visited(config, visited);
 	return (1);
 }

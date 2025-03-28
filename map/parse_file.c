@@ -12,6 +12,19 @@
 
 #include "map.h"
 
+static int	_init(const char *filename, t_config *config)
+{
+	int		fd;
+
+	if (!validate_extension(filename))
+		return (0);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	init_config(config);
+	return (fd);
+}
+
 /*
  * parse_file: 지정한 파일(예: "scene.cub")을 열어 한 줄씩 읽으면서
  * 텍스처 경로, 바닥/천장 색상, 그리고 맵 정보를 config 구조체에 저장합니다.
@@ -21,12 +34,9 @@ int	parse_file(const char *filename, t_config *config)
 	int		fd;
 	char	*line;
 
-	if (!validate_extension(filename))
+	fd = init_file(filename, config);
+	if (!fd)
 		return (0);
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	init_config(config);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -41,5 +51,7 @@ int	parse_file(const char *filename, t_config *config)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (config->map_height == 0 || !validate_map_closed(config))
+		return (0);
 	return (1);
 }
