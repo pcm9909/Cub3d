@@ -34,7 +34,7 @@ int	parse_file(const char *filename, t_config *config)
 	int		fd;
 	char	*line;
 
-	fd = init_file(filename, config);
+	fd = _init(filename, config);
 	if (!fd)
 		return (0);
 	line = get_next_line(fd);

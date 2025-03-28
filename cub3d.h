@@ -114,5 +114,6 @@ void	rotate_player(t_game *game, double angle);
 /* 렌더링 및 이벤트 */
 int		render_frame(t_game *game);
 int		keypress(int key, void *param);
+int		close_win(void);
 
 #endif

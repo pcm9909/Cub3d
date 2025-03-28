@@ -36,3 +36,8 @@ int	keypress(int key, void *param)
 	render_frame(game);
 	return (0);
 }
+
+int	close_win(void)
+{
+	exit(0);
+}
