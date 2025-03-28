@@ -95,8 +95,9 @@ static int	add_map_line(t_config *config, char *line)
 	if (len > config->map_width)
 		config->map_width = len;
 	check_player_spawn(config, line, config->map_height);
-	new_map = ft_realloc(config->map, sizeof(char *) * \
-			(config->map_height + 1));
+	new_map = ft_realloc(config->map, \
+			(sizeof(char *) * config->map_height), \
+			(sizeof(char *) * (config->map_height + 1)));
 	if (!new_map)
 		return (0);
 	config->map = new_map;
