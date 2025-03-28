@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror
-NAME		=	cub3d
+CFLAGS		=	-Wall -Wextra -Werror #-g -fsanitize=address
+NAME		=	cub3D
 LIBFT		=	libft
 LIBFT_LIB	=	libft.a
 MLX			=	mlx
@@ -24,30 +24,30 @@ SRCS		= 	main.c player.c hooks.c init.c \
 
 OBJS 		:=	$(SRCS:%.c=%.o)
 
-.PHONY:		all clean fclean re
+.PHONY:			all clean fclean re
 
-all		:	$(LIBFT_LIB) $(MLX_LIB) $(NAME)
+all			:	$(LIBFT_LIB) $(MLX_LIB) $(NAME)
 
-$(NAME)	:	$(OBJS)
-		$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) -lft -L$(MLX) -lmlx -lXext -lX11 -lm -o $(NAME)
+$(NAME)		:	$(OBJS)
+				$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT) 	
 
 $(LIBFT_LIB):
-	@make bonus -C $(LIBFT)
+				@make bonus -C $(LIBFT)
 
-$(MLX_LIB):
-	@make -C $(MLX)
+$(MLX_LIB)	:
+				@make -C $(MLX)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I$(LIBFT) -I$(MLX) -I./inc -c $< -o $@
+				$(CC) $(CFLAGS) -I$(LIBFT) -I$(MLX) -I./inc -c $< -o $@
 
-clean:
-	@make clean -C $(LIBFT)
-	@make clean -C $(MLX)
-	@rm -f $(OBJS)
+clean		:
+				@make clean -C $(LIBFT)
+				@make clean -C $(MLX)
+				@rm -f $(OBJS)
 
-fclean:		clean
-	@make fclean -C $(LIBFT)
-	@rm -f $(MLX)/$(MLX_LIB)
-	@rm -f $(NAME)
+fclean		:	clean
+				@rm -f $(LIBFT)/$(LIBFT_LIB)
+				@rm -f $(MLX)/$(MLX_LIB)
+				@rm -f $(NAME)
 
-re:			fclean all
+re			:	fclean all
