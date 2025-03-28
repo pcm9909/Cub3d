@@ -23,8 +23,8 @@ static void	check_player_spawn(t_config *config, char *line, int row)
 	i = 0;
 	while (line[i])
 	{
-		if ((line[i] == 'N' || line[i] == 'S' ||
-			line[i] == 'E' || line[i] == 'W') && 
+		if ((line[i] == 'N' || line[i] == 'S' || \
+			line[i] == 'E' || line[i] == 'W') && \
 			config->player.sight == '\0')
 		{
 			config->player.x = i;
@@ -37,22 +37,50 @@ static void	check_player_spawn(t_config *config, char *line, int row)
 }
 
 /*
- * parse_color_str: "R,G,B" 형태의 문자열을 파싱하여 정수 배열에 저장.
+ * process_color_line: 'F' 또는 'C'로 시작하는 라인을 처리하여  
+ * 해당 색상 배열에 "R,G,B" 값을 저장합니다.
+ * 성공하면 1, 실패하면 0을 반환합니다.
  */
-static int	parse_color_str(char *str, int color[3])
+static int	process_color(t_config *config, char type, char *trimmed)
 {
 	char	**token;
+	char	*color_line;
 	int		i;
+	int		ret;
 
+	color_line = ft_strdup(ltrim(trimmed + 1));
+	token = ft_split(color_line, ',');
 	i = 0;
-	token = ft_split(str, ',');
 	while (token && i < 3)
 	{
-		color[i] = atoi(token[i]);
+		if (type == 'F')
+			config->floor_color[i] = ft_atoi(token[i]);
+		else if (type == 'C')
+			config->ceiling_color[i] = ft_atoi(token[i]);
 		i++;
 	}
 	ft_freesplit(token);
-	return (i == 3);
+	free(color_line);
+	ret = (i == 3);
+	return (ret);
+}
+
+/*
+ * process_texture: 텍스처 정의 라인을 처리.
+ */
+static int	process_texture(t_config *config, char *trimmed)
+{
+	if (ft_strncmp(trimmed, "NO", 2) == 0)
+		config->texture_no = ft_strdup(ltrim(trimmed + 2));
+	else if (ft_strncmp(trimmed, "SO", 2) == 0)
+		config->texture_so = ft_strdup(ltrim(trimmed + 2));
+	else if (ft_strncmp(trimmed, "WE", 2) == 0)
+		config->texture_we = ft_strdup(ltrim(trimmed + 2));
+	else if (ft_strncmp(trimmed, "EA", 2) == 0)
+		config->texture_ea = ft_strdup(ltrim(trimmed + 2));
+	else
+		return (0);
+	return (1);
 }
 
 /*
@@ -75,42 +103,6 @@ static int	add_map_line(t_config *config, char *line)
 	config->map[config->map_height] = ft_strdup(line);
 	config->map_height++;
 	return (1);
-}
-
-/*
- * process_texture: 텍스처 정의 라인을 처리.
- */
-static int	process_texture(t_config *config, char *trimmed)
-{
-	if (ft_strncmp(trimmed, "NO", 2) == 0)
-		config->texture_no = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "SO", 2) == 0)
-		config->texture_so = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "WE", 2) == 0)
-		config->texture_we = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "EA", 2) == 0)
-		config->texture_ea = ft_strdup(ltrim(trimmed + 2));
-	else
-		return (0);
-	return (1);
-}
-
-/*
- * process_color: 'F' 또는 'C'로 시작하는 라인을 처리하여 색상을 파싱.
- */
-static int	process_color(t_config *config, char type, char *trimmed)
-{
-	char	*color_line;
-	int		ret;
-
-	color_line = ft_strdup(ltrim(trimmed + 1));
-	ret = 0;
-	if (type == 'F')
-		ret = parse_color_str(color_line, config->floor_color);
-	else if (type == 'C')
-		ret = parse_color_str(color_line, config->ceiling_color);
-	free(color_line);
-	return (ret);
 }
 
 /*
