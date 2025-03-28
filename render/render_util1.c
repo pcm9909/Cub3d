@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_util1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 19:40:26 by dukim             #+#    #+#             */
-/*   Updated: 2025/03/26 19:40:27 by dukim            ###   ########.fr       */
+/*   Updated: 2025/03/27 21:55:13 by chunpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,26 @@ void	fill_floor_ceiling(t_game *g)
 	int	x;
 	int	pix;
 
-	y = 0;
-	while (y < HEIGHT)
+	y = -1;
+	while (++y < HEIGHT)
 	{
-		x = 0;
-		while (x < WIDTH)
+		x = -1;
+		while (++x < WIDTH)
 		{
-			pix = y * g->img.size_line + \
-				x * (g->img.bpp / 8);
+			pix = y * g->img.size_line + x * (g->img.bpp / 8);
 			if (y < HEIGHT / 2)
 			{
 				*(int *)(g->img.data + pix) = \
 				(g->config.ceiling_color[0] << 16) | \
-				(g->config.ceiling_color[1] << 8) | \
-				(g->config.ceiling_color[2]);
+				g->config.ceiling_color[1] << 8 | g->config.ceiling_color[2];
 			}
 			else
 			{
 				*(int *)(g->img.data + pix) = \
 				(g->config.floor_color[0] << 16) | \
-				(g->config.floor_color[1] << 8) | \
-				(g->config.floor_color[2]);
+				(g->config.floor_color[1] << 8) | (g->config.floor_color[2]);
 			}
-			x++;
 		}
-		y++;
 	}
 }
 
