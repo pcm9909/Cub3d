@@ -40,6 +40,7 @@ int	validate_map_line(char *line)
 	while (line[i])
 	{
 		if (line[i] != '0' && line[i] != '1' && \
+			line[i] != ' ' && \
 			line[i] != 'N' && line[i] != 'S' && \
 			line[i] != 'E' && line[i] != 'W')
 			return (0);
