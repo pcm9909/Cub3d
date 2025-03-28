@@ -41,14 +41,14 @@ static void	check_player_spawn(t_config *config, char *line, int row)
  * 해당 색상 배열에 "R,G,B" 값을 저장합니다.
  * 성공하면 1, 실패하면 0을 반환합니다.
  */
-static int	process_color(t_config *config, char type, char *trimmed)
+static int	process_color(t_config *config, char type, char *line)
 {
 	char	**token;
 	char	*color_line;
 	int		i;
 	int		ret;
 
-	color_line = ft_strdup(ltrim(trimmed + 1));
+	color_line = ft_strdup(ltrim(line + 1));
 	token = ft_split(color_line, ',');
 	i = 0;
 	while (token && i < 3)
@@ -68,16 +68,16 @@ static int	process_color(t_config *config, char type, char *trimmed)
 /*
  * process_texture: 텍스처 정의 라인을 처리.
  */
-static int	process_texture(t_config *config, char *trimmed)
+static int	process_texture(t_config *config, char *line)
 {
-	if (ft_strncmp(trimmed, "NO", 2) == 0)
-		config->texture_no = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "SO", 2) == 0)
-		config->texture_so = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "WE", 2) == 0)
-		config->texture_we = ft_strdup(ltrim(trimmed + 2));
-	else if (ft_strncmp(trimmed, "EA", 2) == 0)
-		config->texture_ea = ft_strdup(ltrim(trimmed + 2));
+	if (ft_strncmp(line, "NO", 2) == 0)
+		config->texture_no = ft_strdup(ltrim(line + 2));
+	else if (ft_strncmp(line, "SO", 2) == 0)
+		config->texture_so = ft_strdup(ltrim(line + 2));
+	else if (ft_strncmp(line, "WE", 2) == 0)
+		config->texture_we = ft_strdup(ltrim(line + 2));
+	else if (ft_strncmp(line, "EA", 2) == 0)
+		config->texture_ea = ft_strdup(ltrim(line + 2));
 	else
 		return (0);
 	return (1);
@@ -111,21 +111,27 @@ static int	add_map_line(t_config *config, char *line)
  */
 int	process_line(t_config *config, char *line)
 {
+	static int	elements;
+
 	if (ft_strncmp(line, "NO", 2) == 0 || \
 		ft_strncmp(line, "SO", 2) == 0 || \
 		ft_strncmp(line, "WE", 2) == 0 || \
 		ft_strncmp(line, "EA", 2) == 0)
 	{
+		elements++;
 		if (!process_texture(config, line))
 			return (0);
 	}
 	else if (line[0] == 'F' || line[0] == 'C')
 	{
+		elements++;
 		if (!process_color(config, line[0], line))
 			return (0);
 	}
 	else if (line[0] != '\0')
 	{
+		if (elements != 6)
+			return (0);
 		if (!add_map_line(config, line))
 			return (0);
 	}
