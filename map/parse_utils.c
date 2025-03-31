@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dukim <dukim@student.42gyeongsan.kr>       +#+  +:+       +#+        */
+/*   By: chunpark <chunpark@student.42gyeongsan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 19:41:14 by dukim             #+#    #+#             */
-/*   Updated: 2025/03/26 19:41:15 by dukim            ###   ########.fr       */
+/*   Updated: 2025/03/29 18:21:49 by chunpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_player_spawn(t_config *config, char *line, int row)
 }
 
 /*
- * process_color_line: 'F' 또는 'C'로 시작하는 라인을 처리하여  
+ * process_color_line: 'F' 또는 'C'로 시작하는 라인을 처리하여
  * 해당 색상 배열에 "R,G,B" 값을 저장합니다.
  * 성공하면 1, 실패하면 0을 반환합니다.
  */
@@ -58,7 +58,9 @@ static int	process_color(t_config *config, char type, char *line)
 	while (token && i < 3)
 	{
 		if (type == 'F')
+		{
 			config->floor_color[i] = ft_atoi(token[i]);
+		}
 		else if (type == 'C')
 			config->ceiling_color[i] = ft_atoi(token[i]);
 		i++;
@@ -75,13 +77,33 @@ static int	process_color(t_config *config, char type, char *line)
 static int	process_texture(t_config *config, char *line)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
-		config->texture_no = ft_strdup(ltrim(line + 2));
+	{
+		if(config->texture_no == NULL)
+			config->texture_no = ft_strdup(ltrim(line + 2));
+		else
+			return (0);
+	}
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		config->texture_so = ft_strdup(ltrim(line + 2));
+	{
+		if(config->texture_so == NULL)
+			config->texture_so = ft_strdup(ltrim(line + 2));
+		else
+			return (0);
+	}
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		config->texture_we = ft_strdup(ltrim(line + 2));
+	{
+		if(config->texture_we == NULL)
+			config->texture_we = ft_strdup(ltrim(line + 2));
+		else
+			return (0);
+	}
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		config->texture_ea = ft_strdup(ltrim(line + 2));
+	{
+		if(config->texture_ea == NULL)
+			config->texture_ea = ft_strdup(ltrim(line + 2));
+		else
+			return (0);
+	}
 	else
 		return (0);
 	return (1);
