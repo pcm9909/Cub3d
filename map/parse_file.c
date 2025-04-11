@@ -51,6 +51,8 @@ int	parse_file(const char *filename, t_config *config)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (validate_player_spawn(&(config->player)))
+		return (0);
 	if (config->map_height == 0 || !validate_map_closed(config))
 		return (0);
 	return (1);

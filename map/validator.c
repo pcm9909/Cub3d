@@ -49,6 +49,14 @@ int	validate_map_line(char *line)
 	return (1);
 }
 
+int	validate_player_spawn(t_player_spawn *player)
+{
+	if (player->x == -1 && player->y == -1 && \
+		player->sight == '\0')
+		return (1);
+	return (0);
+}
+
 /*
 ** validate_map_closed: 맵 전체의 모든 '0' 영역이 완전히 닫혀 있는지 검사.
 ** 만약 하나라도 열린 영역이 있으면 0, 모두 닫혀 있으면 1 반환.

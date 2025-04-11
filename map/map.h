@@ -33,6 +33,7 @@ int		dfs(int i, int j, t_config *config, int **visited);
 
 int		validate_extension(const char *filename);
 int		validate_map_line(char *line);
+int     validate_player_spawn(t_player_spawn *player);
 int		validate_map_closed(t_config *config);
 
 #endif
