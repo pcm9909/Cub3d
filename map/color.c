@@ -16,7 +16,7 @@
 ** get_color_type: 라인이 정확히 'F ' 또는 'C '로 시작하면 그 문자를 반환, 
 ** 아니라면 0을 반환합니다.
 */
-char    get_color_type(const char *line)
+char	get_color_type(const char *line)
 {
 	if (!line)
 		return (0);

@@ -88,7 +88,7 @@ void	set_player_direction(char dir, t_player *player)
 		index = 2;
 	else if (dir == 'E')
 		index = 3;
-	else if (dir == 'W')
+	else
 		index = 4;
 	set_directions(index, player);
 }

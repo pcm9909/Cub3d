@@ -78,34 +78,28 @@ static int	process_texture(t_config *config, char *line)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
 	{
-		if(config->texture_no == NULL)
-			config->texture_no = ft_strdup(ltrim(line + 2));
-		else
+		if (config->texture_no != NULL)
 			return (0);
+		config->texture_no = ft_strdup(ltrim(line + 2));
 	}
 	else if (ft_strncmp(line, "SO", 2) == 0)
 	{
-		if(config->texture_so == NULL)
-			config->texture_so = ft_strdup(ltrim(line + 2));
-		else
+		if (config->texture_so != NULL)
 			return (0);
+		config->texture_so = ft_strdup(ltrim(line + 2));
 	}
 	else if (ft_strncmp(line, "WE", 2) == 0)
 	{
-		if(config->texture_we == NULL)
-			config->texture_we = ft_strdup(ltrim(line + 2));
-		else
+		if (config->texture_we != NULL)
 			return (0);
+		config->texture_we = ft_strdup(ltrim(line + 2));
 	}
 	else if (ft_strncmp(line, "EA", 2) == 0)
 	{
-		if(config->texture_ea == NULL)
-			config->texture_ea = ft_strdup(ltrim(line + 2));
-		else
+		if (config->texture_ea != NULL)
 			return (0);
+		config->texture_ea = ft_strdup(ltrim(line + 2));
 	}
-	else
-		return (0);
 	return (1);
 }
 
@@ -142,10 +136,8 @@ int	process_line(t_config *config, char *line)
 {
 	static int	elements;
 
-	if (ft_strncmp(line, "NO", 2) == 0 || \
-		ft_strncmp(line, "SO", 2) == 0 || \
-		ft_strncmp(line, "WE", 2) == 0 || \
-		ft_strncmp(line, "EA", 2) == 0)
+	if (ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 || \
+		ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
 	{
 		elements++;
 		if (!process_texture(config, line))
@@ -154,6 +146,8 @@ int	process_line(t_config *config, char *line)
 	else if (line[0] == 'F' || line[0] == 'C')
 	{
 		elements++;
+		if (!validate_color_line(line))
+			return (0);
 		if (!process_color(config, line[0], line))
 			return (0);
 	}
