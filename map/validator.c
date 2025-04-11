@@ -49,12 +49,47 @@ int	validate_map_line(char *line)
 	return (1);
 }
 
+/*
+** validate_player_spawn: 플레이어 초기 위치가 존재하는 지 검증합니다.
+*/
 int	validate_player_spawn(t_player_spawn *player)
 {
 	if (player->x == -1 && player->y == -1 && \
 		player->sight == '\0')
 		return (1);
 	return (0);
+}
+
+/*
+** validate_color_line: 색상 정의 라인을 검사합니다.
+** 라인은 정확히 "F " 또는 "C "로 시작해야 하며, 그 뒤에 3개의
+** 콤마 구분 숫자 토큰이 있어야 합니다.
+** 올바른 경우 1, 그렇지 않으면 0을 반환합니다.
+*/
+int	validate_color_line(const char *line)
+{
+	char	type;
+	char	*values;
+	char	**tokens;
+	int		result;
+
+	type = get_color_type(line);
+	if (!type)
+		return (0);
+	values = get_color_values(line);
+	if (!values || values[0] == '\0')
+	{
+		if (values)
+			free(values);
+		return (0);
+	}
+	tokens = ft_split(values, ',');
+	free(values);
+	if (!tokens)
+		return (0);
+	result = validate_color_tokens(tokens);
+	ft_freesplit(tokens);
+	return (result);
 }
 
 /*
