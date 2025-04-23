@@ -95,12 +95,12 @@ int	**allocate_visited(t_config *config)
 /*
 ** free_visited: allocate_visited로 할당한 visited 배열 해제.
 */
-void	free_visited(t_config *config, int **visited)
+void	free_visited(int map_height, int **visited)
 {
 	int	i;
 
 	i = 0;
-	while (i < config->map_height)
+	while (i < map_height)
 	{
 		free(visited[i]);
 		i++;

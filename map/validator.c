@@ -116,11 +116,11 @@ int	validate_map_closed(t_config *config)
 			if (config->map[i][j] == '0' && !visited[i][j] && \
 				!dfs(i, j, config, visited))
 			{
-				free_visited(config, visited);
+				free_visited(config->map_height, visited);
 				return (0);
 			}
 		}
 	}
-	free_visited(config, visited);
+	free_visited(config->map_height, visited);
 	return (1);
 }
