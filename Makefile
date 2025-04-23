@@ -20,7 +20,7 @@ MLX_LIB		=	libmlx.a
 
 SRCS		= 	main.c player.c hooks.c init.c \
 				map/config.c map/parse_file.c map/parse_utils.c map/str_utils.c \
-				map/validator.c map/dfs.c map/color.c\
+				map/validator.c map/closed.c map/color.c\
 				render/render_util1.c render/render_util2.c render/render.c
 
 OBJS 		:=	$(SRCS:%.c=%.o)

@@ -31,10 +31,8 @@ char	*get_color_values(const char *line);
 int		validate_color_token(const char *token);
 int		validate_color_tokens(char **tokens);
 
-int		**allocate_visited(t_config *config);
-void	free_visited(int map_height, int **visited);
-int		is_valid_index(int i, int j, t_config *config);
-int		dfs(int i, int j, t_config *config, int **visited);
+int		is_on_border(int i, int j, int height, int width);
+int		has_adjacent_space(t_config *config, int i, int j);
 
 int		validate_extension(const char *filename);
 int		validate_map_line(char *line);

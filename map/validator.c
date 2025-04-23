@@ -98,29 +98,28 @@ int	validate_color_line(const char *line)
 */
 int	validate_map_closed(t_config *config)
 {
-	int		i;
-	int		j;
-	int		row_len;
-	int		**visited;
+	int	i;
+	int	j;
+	int	h;
+	int	w;
 
-	visited = allocate_visited(config);
-	if (!visited)
-		return (0);
-	i = -1;
-	while (++i < config->map_height)
+	h = config->map_height;
+	i = 0;
+	while (i < h)
 	{
-		row_len = ft_strlen(config->map[i]);
-		j = -1;
-		while (++j < row_len)
+		w = ft_strlen(config->map[i]);
+		j = 0;
+		while (j < w)
 		{
-			if (config->map[i][j] == '0' && !visited[i][j] && \
-				!dfs(i, j, config, visited))
+			if (config->map[i][j] == '0')
 			{
-				free_visited(config->map_height, visited);
-				return (0);
+				if (is_on_border(i, j, h, w) || \
+					has_adjacent_space(config, i, j))
+					return (0);
 			}
+			j++;
 		}
+		i++;
 	}
-	free_visited(config->map_height, visited);
 	return (1);
 }
