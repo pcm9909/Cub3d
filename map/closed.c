@@ -29,9 +29,11 @@ int	is_on_border(int i, int j, int height, int width)
 */
 int	has_adjacent_space(t_config *config, int i, int j)
 {
-	if (config->map[i - 1][j] == ' ')
+	if (ft_strlen(config->map[i - 1]) <= (size_t)j || \
+		config->map[i - 1][j] == ' ')
 		return (1);
-	if (config->map[i + 1][j] == ' ')
+	if (ft_strlen(config->map[i + 1]) <= (size_t)j || \
+		config->map[i + 1][j] == ' ')
 		return (1);
 	if (config->map[i][j - 1] == ' ')
 		return (1);

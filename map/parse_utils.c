@@ -135,7 +135,10 @@ static int	add_map_line(t_config *config, char *line)
 int	process_line(t_config *config, char *line)
 {
 	static int	elements;
+	static int	is_map_start;
 
+	if (line[0] == '\0' && is_map_start)
+		return (0);
 	if (ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 || \
 		ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
 	{
@@ -146,17 +149,14 @@ int	process_line(t_config *config, char *line)
 	else if (line[0] == 'F' || line[0] == 'C')
 	{
 		elements++;
-		if (!validate_color_line(line))
-			return (0);
-		if (!process_color(config, line[0], line))
+		if (!validate_color_line(line) || !process_color(config, line[0], line))
 			return (0);
 	}
 	else if (line[0] != '\0')
 	{
-		if (elements != 6)
+		if (elements != 6 || !add_map_line(config, line))
 			return (0);
-		if (!add_map_line(config, line))
-			return (0);
+		is_map_start = 1;
 	}
 	return (1);
 }
