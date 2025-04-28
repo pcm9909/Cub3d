@@ -52,9 +52,21 @@ static int	process_color(t_config *config, char type, char *line)
 	if (!parse_rgb(line + 1, rgb))
 		return (0);
 	if (type == 'F')
+	{
+		if (config->floor_color[0] != -1 && \
+			config->floor_color[1] != -1 && \
+			config->floor_color[2] != -1)
+			return (0);
 		ft_memcpy(config->floor_color, rgb, sizeof(int) * 3);
+	}
 	else
+	{
+		if (config->ceiling_color[0] != -1 && \
+			config->ceiling_color[1] != -1 && \
+			config->ceiling_color[2] != -1)
+			return (0);
 		ft_memcpy(config->ceiling_color, rgb, sizeof(int) * 3);
+	}
 	return (1);
 }
 
