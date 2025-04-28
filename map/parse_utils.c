@@ -65,27 +65,27 @@ static int	process_texture(t_config *config, char *line)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
 	{
-		if (config->texture_no != NULL)
+		if (config->texture_no != NULL || line[2] != ' ')
 			return (0);
-		config->texture_no = ft_strdup(ltrim(line + 2));
+		config->texture_no = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "SO", 2) == 0)
 	{
-		if (config->texture_so != NULL)
+		if (config->texture_so != NULL || line[2] != ' ')
 			return (0);
-		config->texture_so = ft_strdup(ltrim(line + 2));
+		config->texture_so = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "WE", 2) == 0)
 	{
-		if (config->texture_we != NULL)
+		if (config->texture_we != NULL || line[2] != ' ')
 			return (0);
-		config->texture_we = ft_strdup(ltrim(line + 2));
+		config->texture_we = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "EA", 2) == 0)
 	{
-		if (config->texture_ea != NULL)
+		if (config->texture_ea != NULL || line[2] != ' ')
 			return (0);
-		config->texture_ea = ft_strdup(ltrim(line + 2));
+		config->texture_ea = ft_strdup(line + 3);
 	}
 	return (1);
 }

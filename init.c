@@ -37,7 +37,7 @@ void	load_textures(t_tex *tex, t_config *config, void *mlx)
 				&tex->width, &tex->height);
 		if (!tex->tex_img[i])
 		{
-			write(2, "Failed to load texture\n", 24);
+			write(2, "Error\nFailed to load texture\n", 30);
 			exit(1);
 		}
 		else
