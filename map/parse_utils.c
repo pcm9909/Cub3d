@@ -47,28 +47,15 @@ int	check_player_spawn(t_config *config, char *line, int row)
  */
 static int	process_color(t_config *config, char type, char *line)
 {
-	char	**token;
-	char	*color_line;
-	int		i;
-	int		ret;
+	int		rgb[3];
 
-	color_line = ft_strdup(ltrim(line + 1));
-	token = ft_split(color_line, ',');
-	i = 0;
-	while (token && i < 3)
-	{
-		if (type == 'F')
-		{
-			config->floor_color[i] = ft_atoi(token[i]);
-		}
-		else if (type == 'C')
-			config->ceiling_color[i] = ft_atoi(token[i]);
-		i++;
-	}
-	ft_freesplit(token);
-	free(color_line);
-	ret = (i == 3);
-	return (ret);
+	if (!parse_rgb(line + 1, rgb))
+		return (0);
+	if (type == 'F')
+		ft_memcpy(config->floor_color, rgb, sizeof(int) * 3);
+	else
+		ft_memcpy(config->ceiling_color, rgb, sizeof(int) * 3);
+	return (1);
 }
 
 /*
@@ -78,27 +65,27 @@ static int	process_texture(t_config *config, char *line)
 {
 	if (ft_strncmp(line, "NO", 2) == 0)
 	{
-		if (config->texture_no != NULL)
+		if (config->texture_no != NULL || line[2] != ' ')
 			return (0);
-		config->texture_no = ft_strdup(ltrim(line + 2));
+		config->texture_no = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "SO", 2) == 0)
 	{
-		if (config->texture_so != NULL)
+		if (config->texture_so != NULL || line[2] != ' ')
 			return (0);
-		config->texture_so = ft_strdup(ltrim(line + 2));
+		config->texture_so = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "WE", 2) == 0)
 	{
-		if (config->texture_we != NULL)
+		if (config->texture_we != NULL || line[2] != ' ')
 			return (0);
-		config->texture_we = ft_strdup(ltrim(line + 2));
+		config->texture_we = ft_strdup(line + 3);
 	}
 	else if (ft_strncmp(line, "EA", 2) == 0)
 	{
-		if (config->texture_ea != NULL)
+		if (config->texture_ea != NULL || line[2] != ' ')
 			return (0);
-		config->texture_ea = ft_strdup(ltrim(line + 2));
+		config->texture_ea = ft_strdup(line + 3);
 	}
 	return (1);
 }
@@ -135,7 +122,10 @@ static int	add_map_line(t_config *config, char *line)
 int	process_line(t_config *config, char *line)
 {
 	static int	elements;
+	static int	is_map_start;
 
+	if (line[0] == '\0' && is_map_start)
+		return (0);
 	if (ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 || \
 		ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
 	{
@@ -146,17 +136,14 @@ int	process_line(t_config *config, char *line)
 	else if (line[0] == 'F' || line[0] == 'C')
 	{
 		elements++;
-		if (!validate_color_line(line))
-			return (0);
 		if (!process_color(config, line[0], line))
 			return (0);
 	}
 	else if (line[0] != '\0')
 	{
-		if (elements != 6)
+		if (elements != 6 || !add_map_line(config, line))
 			return (0);
-		if (!add_map_line(config, line))
-			return (0);
+		is_map_start = 1;
 	}
 	return (1);
 }

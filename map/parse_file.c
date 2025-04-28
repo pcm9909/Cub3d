@@ -12,11 +12,26 @@
 
 #include "map.h"
 
+/*
+** check_extension: 파일 이름이 ".cub" 확장자로 끝나면 1, 아니면 0을 반환.
+*/
+static int	check_extension(const char *filename)
+{
+	size_t	len;
+
+	len = ft_strlen(filename);
+	if (len < 4)
+		return (0);
+	if (ft_strncmp(filename + len - 4, ".cub", 4) != 0)
+		return (0);
+	return (1);
+}
+
 static int	_init(const char *filename, t_config *config)
 {
 	int		fd;
 
-	if (!validate_extension(filename))
+	if (!check_extension(filename))
 		return (0);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -51,7 +66,7 @@ int	parse_file(const char *filename, t_config *config)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (validate_player_spawn(&(config->player)))
+	if (!validate_player_spawn(&(config->player)))
 		return (0);
 	if (config->map_height == 0 || !validate_map_closed(config))
 		return (0);
