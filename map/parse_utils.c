@@ -47,28 +47,15 @@ int	check_player_spawn(t_config *config, char *line, int row)
  */
 static int	process_color(t_config *config, char type, char *line)
 {
-	char	**token;
-	char	*color_line;
-	int		i;
-	int		ret;
+	int		rgb[3];
 
-	color_line = ft_strdup(ltrim(line + 1));
-	token = ft_split(color_line, ',');
-	i = 0;
-	while (token && i < 3)
-	{
-		if (type == 'F')
-		{
-			config->floor_color[i] = ft_atoi(token[i]);
-		}
-		else if (type == 'C')
-			config->ceiling_color[i] = ft_atoi(token[i]);
-		i++;
-	}
-	ft_freesplit(token);
-	free(color_line);
-	ret = (i == 3);
-	return (ret);
+	if (!parse_rgb(line + 1, rgb))
+		return (0);
+	if (type == 'F')
+		ft_memcpy(config->floor_color, rgb, sizeof(int) * 3);
+	else
+		ft_memcpy(config->ceiling_color, rgb, sizeof(int) * 3);
+	return (1);
 }
 
 /*
@@ -149,7 +136,7 @@ int	process_line(t_config *config, char *line)
 	else if (line[0] == 'F' || line[0] == 'C')
 	{
 		elements++;
-		if (!validate_color_line(line) || !process_color(config, line[0], line))
+		if (!process_color(config, line[0], line))
 			return (0);
 	}
 	else if (line[0] != '\0')
