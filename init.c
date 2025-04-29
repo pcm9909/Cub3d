@@ -24,10 +24,10 @@ void	load_textures(t_tex *tex, t_config *config, void *mlx)
 	char	*texture_files[4];
 	int		i;
 
-	texture_files[0] = config->texture_ea;
-	texture_files[1] = config->texture_no;
+	texture_files[0] = config->texture_so;
+	texture_files[1] = config->texture_ea;
 	texture_files[2] = config->texture_we;
-	texture_files[3] = config->texture_so;
+	texture_files[3] = config->texture_no;
 	tex->width = 64;
 	tex->height = 64;
 	i = 0;
